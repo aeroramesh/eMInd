@@ -1,8 +1,8 @@
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-from examples.example_calculator.calc_conf import *
+from eMind_conf import *
 from nodeeditor.node_editor_widget import NodeEditorWidget
-from examples.example_calculator.calc_node_base import *
+from eMind_node_base import *
 from nodeeditor.node_edge import EDGE_TYPE_DIRECT, EDGE_TYPE_BEZIER
 from nodeeditor.node_graphics_view import MODE_EDGE_DRAG#, MODE_EDGES_REROUTING
 from nodeeditor.utils import dumpException
@@ -209,3 +209,5 @@ class CalculatorSubWindow(NodeEditorWidget):
 
             else:
                 self.scene.history.storeHistory("Created %s" % new_calc_node.__class__.__name__)
+                
+    def onkeyPressevent(self):

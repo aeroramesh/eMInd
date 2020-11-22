@@ -5,10 +5,11 @@ from PyQt5.QtCore import *
 
 from nodeeditor.utils import loadStylesheets
 from nodeeditor.node_editor_window import NodeEditorWindow
-from examples.example_calculator.calc_sub_window import CalculatorSubWindow
-from examples.example_calculator.calc_drag_listbox import QDMDragListbox
+
+from eMind_sub_window import CalculatorSubWindow
+from eMind_drag_listbox import QDMDragListbox
 from nodeeditor.utils import dumpException, pp
-from examples.example_calculator.calc_conf import *
+from eMind_conf import *
 
 # Enabling edge validators
 from nodeeditor.node_edge import Edge
@@ -19,17 +20,17 @@ Edge.registerEdgeValidator(edge_cannot_connect_input_and_output_of_same_node)
 
 
 # images for the dark skin
-import examples.example_calculator.qss.nodeeditor_dark_resources
+import qss.nodeeditor_dark_resources
 
 
 DEBUG = False
 
 
-class CalculatorWindow(NodeEditorWindow):
+class eMindWindow(NodeEditorWindow):
 
     def initUI(self):
-        self.name_company = 'Blenderfreak'
-        self.name_product = 'Calculator NodeEditor'
+        self.name_company = 'simTestLab'
+        self.name_product = 'eMindGraph'
 
         self.stylesheet_filename = os.path.join(os.path.dirname(__file__), "qss/nodeeditor.qss")
         loadStylesheets(
@@ -58,6 +59,7 @@ class CalculatorWindow(NodeEditorWindow):
         self.windowMapper.mapped[QWidget].connect(self.setActiveSubWindow)
 
         self.createNodesDock()
+        self.createPropertyDock()
 
         self.createActions()
         self.createMenus()
@@ -67,7 +69,7 @@ class CalculatorWindow(NodeEditorWindow):
 
         self.readSettings()
 
-        self.setWindowTitle("Calculator NodeEditor Example")
+        self.setWindowTitle("eMind -SimTestLab")
 
     def closeEvent(self, event):
         self.mdiArea.closeAllSubWindows()
@@ -134,7 +136,7 @@ class CalculatorWindow(NodeEditorWindow):
 
 
     def about(self):
-        QMessageBox.about(self, "About Calculator NodeEditor Example",
+        QMessageBox.about(self, "eMind from SimTestLab",
                 "The <b>Calculator NodeEditor</b> example demonstrates how to write multiple "
                 "document interface applications using PyQt5 and NodeEditor. For more information visit: "
                 "<a href='https://www.blenderfreak.com/'>www.BlenderFreak.com</a>")
@@ -235,10 +237,20 @@ class CalculatorWindow(NodeEditorWindow):
 
     def createNodesDock(self):
         self.nodesListWidget = QDMDragListbox()
-
         self.nodesDock = QDockWidget("Nodes")
         self.nodesDock.setWidget(self.nodesListWidget)
         self.nodesDock.setFloating(False)
+        self.addDockWidget(Qt.LeftDockWidgetArea, self.nodesDock)
+
+    def createPropertyDock(self):
+        #self.nodesListWidget = QDMDragListbox()
+        self.PropEditor = QLineEdit()
+
+
+        self.nodesDock = QDockWidget("Properties")
+        self.nodesDock.setWidget(self.PropEditor)
+        self.nodesDock.setFloating(False)
+
 
         self.addDockWidget(Qt.RightDockWidgetArea, self.nodesDock)
 

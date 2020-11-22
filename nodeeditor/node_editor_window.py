@@ -22,8 +22,8 @@ class NodeEditorWindow(QMainWindow):
         """
         super().__init__()
 
-        self.name_company = 'Blenderfreak'
-        self.name_product = 'NodeEditor'
+        self.name_company = 'SimTestLab'
+        self.name_product = 'eMind'
 
         self.initUI()
 

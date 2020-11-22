@@ -49,8 +49,9 @@ class QDMGraphicsNode(QGraphicsItem):
 
     @title.setter
     def title(self, value):
-        self._title = value
-        self.title_item.setPlainText(self._title)
+        pass
+        #self._title = value
+        #self.title_item.setPlainText(self._title)
 
     def initUI(self):
         """Set up this ``QGraphicsItem``"""
@@ -59,7 +60,7 @@ class QDMGraphicsNode(QGraphicsItem):
         self.setAcceptHoverEvents(True)
 
         # init title
-        self.initTitle()
+        #self.initTitle()
         self.title = self.node.title
 
         self.initContent()
@@ -71,16 +72,16 @@ class QDMGraphicsNode(QGraphicsItem):
         self.edge_roundness = 10.0
         self.edge_padding = 10.0
         self.title_height = 24.0
-        self.title_horizontal_padding = 4.0
-        self.title_vertical_padding = 4.0
+        #self.title_horizontal_padding = 4.0
+        #self.title_vertical_padding = 4.0
 
     def initAssets(self):
         """Initialize ``QObjects`` like ``QColor``, ``QPen`` and ``QBrush``"""
         self._title_color = Qt.white
         self._title_font = QFont("Ubuntu", 10)
 
-        self._color = QColor("#7F000000")
-        self._color_selected = QColor("#FFFFA637")
+        self._color = Qt.white
+        self._color_selected = Qt.darkGray
         self._color_hovered = QColor("#FF37A6FF")
 
         self._pen_default = QPen(self._color)
@@ -91,7 +92,7 @@ class QDMGraphicsNode(QGraphicsItem):
         self._pen_hovered.setWidthF(3.0)
 
         self._brush_title = QBrush(QColor("#FF313131"))
-        self._brush_background = QBrush(QColor("#E3212121"))
+        self._brush_background = QBrush(QColor("#99ffd6"))
 
     def onSelected(self):
         """Our event handling when the node was selected"""
@@ -159,8 +160,8 @@ class QDMGraphicsNode(QGraphicsItem):
     def boundingRect(self) -> QRectF:
         """Defining Qt' bounding rectangle"""
         return QRectF(
-            0,
-            0,
+            10,
+            10,
             self.width,
             self.height
         ).normalized()

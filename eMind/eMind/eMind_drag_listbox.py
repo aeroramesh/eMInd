@@ -2,7 +2,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-from examples.example_calculator.calc_conf import *
+from eMind_conf import *
 from nodeeditor.utils import dumpException
 
 

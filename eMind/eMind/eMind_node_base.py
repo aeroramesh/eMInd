@@ -15,8 +15,8 @@ class CalcGraphicsNode(QDMGraphicsNode):
         self.height = 74
         self.edge_roundness = 6
         self.edge_padding = 0
-        self.title_horizontal_padding = 8
-        self.title_vertical_padding = 10
+        self.title_horizontal_padding = 1
+        self.title_vertical_padding = 1
 
     def initAssets(self):
         super().initAssets()

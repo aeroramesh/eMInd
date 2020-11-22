@@ -1,6 +1,6 @@
 from PyQt5.QtCore import *
-from examples.example_calculator.calc_conf import *
-from examples.example_calculator.calc_node_base import *
+from eMind_conf import *
+from eMind_node_base import *
 from nodeeditor.utils import dumpException
 
 
@@ -28,7 +28,7 @@ class CalcInputContent(QDMNodeContentWidget):
 
 @register_node(OP_NODE_INPUT)
 class CalcNode_Input(CalcNode):
-    icon = "icons/in.png"
+    icon = "icons/in.ico"
     op_code = OP_NODE_INPUT
     op_title = "Input"
     content_label_objname = "calc_node_input"

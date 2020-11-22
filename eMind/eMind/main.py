@@ -4,16 +4,16 @@ from PyQt5.QtWidgets import *
 
 sys.path.insert(0, os.path.join( os.path.dirname(__file__), "..", ".." ))
 
-from examples.example_calculator.calc_window import CalculatorWindow
+from eMind_window import eMindWindow
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    # print(QStyleFactory.keys())
+    print(QStyleFactory.keys())
     app.setStyle('Fusion')
 
-    wnd = CalculatorWindow()
+    wnd = eMindWindow()
     wnd.show()
 
     sys.exit(app.exec_())
