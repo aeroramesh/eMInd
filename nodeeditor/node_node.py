@@ -130,6 +130,8 @@ class Node(Serializable):
             RIGHT_BOTTOM: 1,
             RIGHT_CENTER: 1,
             RIGHT_TOP: 1,
+            TOP_CENTER: 0,
+            BOTTOM_CENTER: 0,
         }
 
     def initSockets(self, inputs: list, outputs: list, reset: bool=True):
@@ -237,9 +239,9 @@ class Node(Serializable):
         :return: Position of described Socket on the `Node`
         :rtype: ``x, y``
         """
-        x = self.socket_offsets[position] if (position in (LEFT_TOP, LEFT_CENTER, LEFT_BOTTOM)) else self.grNode.width + self.socket_offsets[position]
+        x = self.socket_offsets[position]  if (position in (LEFT_TOP, LEFT_CENTER, LEFT_BOTTOM)) else (self.grNode.width + self.socket_offsets[position]) /2
 
-        if position in (LEFT_BOTTOM, RIGHT_BOTTOM):
+        if position in (LEFT_BOTTOM, RIGHT_BOTTOM, BOTTOM_CENTER):
             # start from bottom
             y = self.grNode.height - self.grNode.edge_roundness - self.grNode.title_vertical_padding - index * self.socket_spacing
         elif position in (LEFT_CENTER, RIGHT_CENTER):
@@ -259,6 +261,12 @@ class Node(Serializable):
         elif position in (LEFT_TOP, RIGHT_TOP):
             # start from top
             y = self.grNode.title_height + self.grNode.title_vertical_padding + self.grNode.edge_roundness + index * self.socket_spacing
+
+        elif position is TOP_CENTER:
+            y =  self.grNode.height
+
+        elif position is BOTTOM_CENTER:
+            y = 0
         else:
             # this should never happen
             y = 0
