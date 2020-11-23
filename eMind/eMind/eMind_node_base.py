@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 from nodeeditor.node_node import Node
 from nodeeditor.node_content_widget import QDMNodeContentWidget
 from nodeeditor.node_graphics_node import QDMGraphicsNode
-from nodeeditor.node_socket import LEFT_CENTER, RIGHT_CENTER
+from nodeeditor.node_socket import LEFT_CENTER, RIGHT_CENTER , TOP_CENTER, BOTTOM_CENTER
 from nodeeditor.utils import dumpException
 
 
@@ -29,11 +29,11 @@ class CalcGraphicsNode(QDMGraphicsNode):
         if self.node.isDirty(): offset = 0.0
         if self.node.isInvalid(): offset = 48.0
 
-        painter.drawImage(
-            QRectF(-10, -10, 24.0, 24.0),
-            self.icons,
-            QRectF(offset, 0, 24.0, 24.0)
-        )
+        #painter.drawImage(
+        #    QRectF(-10, -10, 24.0, 24.0),
+        #    self.icons,
+        #    QRectF(offset, 0, 24.0, 24.0)
+        #)
 
 
 class CalcContent(QDMNodeContentWidget):
@@ -63,8 +63,8 @@ class CalcNode(Node):
 
     def initSettings(self):
         super().initSettings()
-        self.input_socket_position = LEFT_CENTER
-        self.output_socket_position = RIGHT_CENTER
+        self.input_socket_position = TOP_CENTER
+        self.output_socket_position = BOTTOM_CENTER
 
     def evalOperation(self, input1, input2):
         return 123
