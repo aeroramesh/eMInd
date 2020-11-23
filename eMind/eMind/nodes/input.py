@@ -30,7 +30,7 @@ class CalcInputContent(QDMNodeContentWidget):
 class CalcNode_Input(CalcNode):
     icon = "icons/in.ico"
     op_code = OP_NODE_INPUT
-    op_title = "Input"
+    op_title = "Start"
     content_label_objname = "calc_node_input"
 
     def __init__(self, scene):
@@ -38,9 +38,9 @@ class CalcNode_Input(CalcNode):
         self.eval()
 
     def initInnerClasses(self):
-        self.content = CalcInputContent(self)
+        #self.content = CalcInputContent(self)
         self.grNode = CalcGraphicsNode(self)
-        self.content.edit.textChanged.connect(self.onInputChanged)
+        #self.content.edit.textChanged.connect(self.onInputChanged)
 
     def evalImplementation(self):
         u_value = self.content.edit.text()
