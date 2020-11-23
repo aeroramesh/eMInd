@@ -209,5 +209,35 @@ class CalculatorSubWindow(NodeEditorWidget):
 
             else:
                 self.scene.history.storeHistory("Created %s" % new_calc_node.__class__.__name__)
-                
-    def onkeyPressevent(self):
+
+    def keyPressEvent(self, e):
+        if True:
+
+            if e.key() == Qt.Key_Escape:
+                print(self.scene.nodes)
+                print('Key Escape')
+
+            elif e.key() == Qt.Key_Right:
+                print('Key Right')
+
+            elif e.key() == Qt.Key_Left:
+                print('Key left')
+
+            elif e.key() == Qt.Key_Up:
+                print('Key Up')
+
+            elif e.key() == Qt.Key_Down:
+                print('Key Down')
+
+            elif e.key() == Qt.Key_Enter or e.key() == Qt.Key_Return:
+                print('Key Enter')
+            else:
+
+                super().keyPressEvent(e)
+        elif e.key() == Qt.Key_Tab:
+            print('Key Tab')
+        else:
+            # self.press_close.emit()
+            # super().mousePressEvent(e)
+
+            super().keyPressEvent(e)
