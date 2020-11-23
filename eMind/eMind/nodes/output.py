@@ -12,10 +12,10 @@ class CalcOutputContent(QDMNodeContentWidget):
 
 
 @register_node(OP_NODE_OUTPUT)
-class CalcNode_Output(CalcNode):
+class eMind_final(CalcNode):
     icon = "icons/out.png"
     op_code = OP_NODE_OUTPUT
-    op_title = "Output"
+    op_title = "final"
     content_label_objname = "calc_node_output"
 
     def __init__(self, scene):
@@ -24,6 +24,7 @@ class CalcNode_Output(CalcNode):
     def initInnerClasses(self):
         self.content = CalcOutputContent(self)
         self.grNode = CalcGraphicsNode(self)
+
 
     def evalImplementation(self):
         input_node = self.getInput(0)
