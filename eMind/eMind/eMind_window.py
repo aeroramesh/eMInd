@@ -66,8 +66,8 @@ class eMindWindow(NodeEditorWindow):
         self.createMenus()
         self.createToolBars()
         self.createStatusBar()
-        self.setUpIconToolBar()
-        self.setUpToolBar()
+        #self.setUpIconToolBar()
+        #self.setUpToolBar()
         self.updateMenus()
 
         self.readSettings()
@@ -100,6 +100,7 @@ class eMindWindow(NodeEditorWindow):
         self.actSeparator.setSeparator(True)
 
         self.actAbout = QAction("&About", self, statusTip="Show the application's About box", triggered=self.about)
+        self.actDummy = QAction("&Dummy", self, statusTip="This is dummy now to generate graph", triggered=self.dummyFunc)
 
     def getCurrentNodeEditorWidget(self):
         """ we're returning NodeEditorWidget here... """
@@ -153,6 +154,9 @@ class eMindWindow(NodeEditorWindow):
 
         self.menuBar().addSeparator()
 
+        self.graphMenu = self.menuBar().addMenu("&Generate")
+        self.graphMenu.addAction(self.actDummy)
+
         self.helpMenu = self.menuBar().addMenu("&Help")
         self.helpMenu.addAction(self.actAbout)
 
@@ -172,6 +176,7 @@ class eMindWindow(NodeEditorWindow):
         self.actNext.setEnabled(hasMdiChild)
         self.actPrevious.setEnabled(hasMdiChild)
         self.actSeparator.setVisible(hasMdiChild)
+        self.actDummy.setEnabled(hasMdiChild)
 
         self.updateEditMenu()
 
@@ -305,10 +310,10 @@ class eMindWindow(NodeEditorWindow):
 
     def dummyFunc(self):
         print('Dummy pAss')
+        print(self.get)
 
     def setUpToolBar(self):
-        pass
-        """
+
         self.toolbar = self.addToolBar('toolbar')
         self.toolbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
 
@@ -373,6 +378,7 @@ class eMindWindow(NodeEditorWindow):
         ############################################################################
         #  undo
         #############################################################################
+        """
         self.undo_action.setIcon(QIcon('/images/undo.png'))
         self.toolbar.addAction(self.dummyFunc)
 
