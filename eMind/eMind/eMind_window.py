@@ -2,6 +2,7 @@ import os
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from PyQt5.QtPrintSupport import *
 
 from nodeeditor.utils import loadStylesheets
 from nodeeditor.node_editor_window import NodeEditorWindow
@@ -65,6 +66,8 @@ class eMindWindow(NodeEditorWindow):
         self.createMenus()
         self.createToolBars()
         self.createStatusBar()
+        self.setUpIconToolBar()
+        self.setUpToolBar()
         self.updateMenus()
 
         self.readSettings()
@@ -287,3 +290,103 @@ class eMindWindow(NodeEditorWindow):
     def setActiveSubWindow(self, window):
         if window:
             self.mdiArea.setActiveSubWindow(window)
+
+    def setUpIconToolBar(self):
+        self.icontoolbar = QToolBar('icon toolbar', self)
+
+        m_signalMapper = QSignalMapper(self)
+
+        system_users_action = QAction(QIcon('/icons/add.png'), 'System-users', self)
+        system_users_action.triggered.connect(m_signalMapper.map)
+        m_signalMapper.setMapping(system_users_action, '/icons/add.png')
+        m_signalMapper.mapped[str].connect(self.dummyFunc)
+        self.addToolBar(Qt.LeftToolBarArea, self.icontoolbar)
+        self.icontoolbar.hide()
+
+    def dummyFunc(self):
+        print('Dummy pAss')
+
+    def setUpToolBar(self):
+        pass
+        """
+        self.toolbar = self.addToolBar('toolbar')
+        self.toolbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+
+        ###########################################################################
+        #  New File
+        ###########################################################################
+        new_file_action = QAction(QIcon('images/filenew.png'), 'New File', self)
+        new_file_action.triggered.connect(self.dummyFunc)
+        self.toolbar.addAction(new_file_action)
+
+        ###########################################################################
+        #  Save File
+        ###########################################################################
+        save_file_action = QAction(QIcon('images/filesave.png'), 'Save File', self)
+        save_file_action.triggered.connect(self.dummyFunc)
+        self.toolbar.addAction(save_file_action)
+
+        ###########################################################################
+        #  Open File
+        ###########################################################################
+        open_file_action = QAction(QIcon('/images/fileopen.png'), 'Open File', self)
+        open_file_action.triggered.connect(self.dummyFunc)
+        self.toolbar.addAction(open_file_action)
+
+        ###########################################################################
+        #  New Sibling Node
+        ###########################################################################
+        new_siblingNode_action = QAction(QIcon('/images/topicafter.svg'), 'topicafter', self)
+        new_siblingNode_action.triggered.connect(self.dummyFunc)
+        new_siblingNode_action.setShortcut('shift + enter')
+        self.toolbar.addAction(new_siblingNode_action)
+
+        ############################################################################
+        #  New Son Node
+        ############################################################################
+        new_sonNode_action = QAction(QIcon('/images/subtopic.svg'), 'subtopic', self)
+        new_sonNode_action.triggered.connect(self.dummyFunc)
+        new_sonNode_action.setShortcut('TAB')
+        self.toolbar.addAction(new_sonNode_action)
+
+        ############################################################################
+        #  Add Branch
+        ############################################################################
+        add_branch_action = QAction(QIcon('/images/relationship.svg'), 'relation', self)
+        add_branch_action.triggered.connect(self.dummyFunc)
+        self.toolbar.addAction(add_branch_action)
+
+        ############################################################################
+        #  Add Notes
+        ############################################################################
+        add_notes_action = QAction(QIcon('/images/notes.svg'), 'note', self)
+        add_notes_action.triggered.connect(self.dummyFunc)
+        self.toolbar.addAction(add_notes_action)
+
+        ############################################################################
+        #  Delete
+        ############################################################################
+        addBranch_action = QAction(QIcon('/images/delete.png'), 'Delete', self)
+        addBranch_action.triggered.connect(self.dummyFunc)
+        self.toolbar.addAction(addBranch_action)
+
+        ############################################################################
+        #  undo
+        #############################################################################
+        self.undo_action.setIcon(QIcon('/images/undo.png'))
+        self.toolbar.addAction(self.dummyFunc)
+
+        ##############################################################################
+        #  redo
+        ##############################################################################
+        self.redo_action.setIcon(QIcon('/images/redo.png'))
+        self.toolbar.addAction(self.dummyFunc)
+
+        self.scene.setUndoStack(self.dummyFunc)
+
+        ############################################################################
+        #  Generated Graph
+        ############################################################################
+        add_Graph_action = QAction(QIcon('/images/Graph.png'), 'GraphGen', self)
+        add_Graph_action.triggered.connect(self.dummyFunc)
+        self.toolbar.addAction(add_Graph_action) """

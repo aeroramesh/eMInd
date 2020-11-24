@@ -43,7 +43,8 @@ class CalcNode_Input(CalcNode):
         #self.content.edit.textChanged.connect(self.onInputChanged)
 
     def evalImplementation(self):
-        u_value = self.content.edit.text()
+        pass
+        """u_value = self.content.edit.text()
         s_value = int(u_value)
         self.value = s_value
         self.markDirty(False)
@@ -56,4 +57,4 @@ class CalcNode_Input(CalcNode):
 
         self.evalChildren()
 
-        return self.value
+        return self.value"""
