@@ -52,7 +52,7 @@ class CalcNode(Node):
     GraphicsNode_class = CalcGraphicsNode
     NodeContent_class = CalcContent
 
-    def __init__(self, scene, inputs=[2,2], outputs=[1]):
+    def __init__(self, scene, inputs=[1], outputs=[3]):
         super().__init__(scene, self.__class__.op_title, inputs, outputs)
 
         self.value = None
@@ -65,12 +65,15 @@ class CalcNode(Node):
         super().initSettings()
         self.input_socket_position = TOP_CENTER
         self.output_socket_position = BOTTOM_CENTER
+        self.input_multi_edged = True
+        self.output_multi_edged = True
 
     def evalOperation(self, input1, input2):
         return 123
 
     def evalImplementation(self):
-        i1 = self.getInput(0)
+        pass
+        """ i1 = self.getInput(0)
         i2 = self.getInput(1)
 
         if i1 is None or i2 is None:
@@ -88,8 +91,9 @@ class CalcNode(Node):
 
             self.markDescendantsDirty()
             self.evalChildren()
+            
 
-            return val
+            return val"""
 
     def eval(self):
         if not self.isDirty() and not self.isInvalid():

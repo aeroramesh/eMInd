@@ -20,8 +20,10 @@ class eMindNode_func(CalcNode):
     icon = "icons/sub.png"
     op_code = OP_NODE_SUB
     op_title = "Func"
-    content_label = "-"
+    content_label = "TestFunction"
     content_label_objname = "calc_node_bg"
+
+
 
     def initInnerClasses(self):
         self.content = FuncInputContent(self)
@@ -57,7 +59,7 @@ class CalcNode_Div(CalcNode):
 
 class FuncInputContent(QDMNodeContentWidget):
     def initUI(self):
-        self.edit = QLineEdit("1", self)
+        self.edit = QLineEdit("TestFunction", self)
         self.edit.setAlignment(Qt.AlignRight)
         self.edit.setObjectName(self.node.content_label_objname)
 
