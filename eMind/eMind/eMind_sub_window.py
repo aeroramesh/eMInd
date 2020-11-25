@@ -6,6 +6,7 @@ from eMind_node_base import *
 from nodeeditor.node_edge import EDGE_TYPE_DIRECT, EDGE_TYPE_BEZIER
 from nodeeditor.node_graphics_view import MODE_EDGE_DRAG#, MODE_EDGES_REROUTING
 from nodeeditor.utils import dumpException
+import networkx as nx
 
 DEBUG = False
 DEBUG_CONTEXT = False
@@ -27,6 +28,7 @@ class CalculatorSubWindow(NodeEditorWidget):
         self.scene.setNodeClassSelector(self.getNodeClassFromData)
 
         self._close_event_listeners = []
+        self.testGraph = nx.Graph()
 
     def getNodeClassFromData(self, data):
         if 'op_code' not in data: return Node
@@ -226,11 +228,13 @@ class CalculatorSubWindow(NodeEditorWidget):
             elif e.key() == Qt.Key_Up:
                 print('Key Up')
 
+
             elif e.key() == Qt.Key_Down:
                 print('Key Down')
 
             elif e.key() == Qt.Key_Enter or e.key() == Qt.Key_Return:
                 print('Key Enter')
+                self.printallNode()
             else:
 
                 super().keyPressEvent(e)
@@ -241,3 +245,11 @@ class CalculatorSubWindow(NodeEditorWidget):
             # super().mousePressEvent(e)
 
             super().keyPressEvent(e)
+
+    def printallNode(self):
+        print('IDs of node ')
+        for node in self.scene.nodes:
+            print(node.id)
+        print('ID of edge')
+        for edge in self.scene.edges:
+            print(edge)
