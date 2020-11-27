@@ -4,9 +4,10 @@ from eMind_conf import *
 from nodeeditor.node_editor_widget import NodeEditorWidget
 from eMind_node_base import *
 from nodeeditor.node_edge import EDGE_TYPE_DIRECT, EDGE_TYPE_BEZIER
-from nodeeditor.node_graphics_view import MODE_EDGE_DRAG#, MODE_EDGES_REROUTING
+from nodeeditor.node_graphics_view import MODE_EDGE_DRAG  # , MODE_EDGES_REROUTING
 from nodeeditor.utils import dumpException
 import networkx as nx
+import matplotlib.pyplot as plt
 
 DEBUG = False
 DEBUG_CONTEXT = False
@@ -28,7 +29,8 @@ class CalculatorSubWindow(NodeEditorWidget):
         self.scene.setNodeClassSelector(self.getNodeClassFromData)
 
         self._close_event_listeners = []
-        self.testGraph = nx.Graph()
+        self.pathList = {"Path": []}
+        self.testGraph = nx.DiGraph()
 
     def getNodeClassFromData(self, data):
         if 'op_code' not in data: return Node
@@ -100,15 +102,14 @@ class CalculatorSubWindow(NodeEditorWidget):
                 node = get_class_from_opcode(op_code)(self.scene)
                 node.setPos(scene_position.x(), scene_position.y())
                 self.scene.history.storeHistory("Created node %s" % node.__class__.__name__)
-            except Exception as e: dumpException(e)
-
+            except Exception as e:
+                dumpException(e)
 
             event.setDropAction(Qt.MoveAction)
             event.accept()
         else:
             # print(" ... drop ignored, not requested format '%s'" % LISTBOX_MIMETYPE)
             event.ignore()
-
 
     def contextMenuEvent(self, event):
         try:
@@ -122,12 +123,13 @@ class CalculatorSubWindow(NodeEditorWidget):
                 self.handleNodeContextMenu(event)
             elif hasattr(item, 'edge'):
                 self.handleEdgeContextMenu(event)
-            #elif item is None:
+            # elif item is None:
             else:
                 self.handleNewNodeContextMenu(event)
 
             return super().contextMenuEvent(event)
-        except Exception as e: dumpException(e)
+        except Exception as e:
+            dumpException(e)
 
     def handleNodeContextMenu(self, event):
         if DEBUG_CONTEXT: print("CONTEXT: NODE")
@@ -158,7 +160,6 @@ class CalculatorSubWindow(NodeEditorWidget):
             val = selected.eval()
             if DEBUG_CONTEXT: print("EVALUATED:", val)
 
-
     def handleEdgeContextMenu(self, event):
         if DEBUG_CONTEXT: print("CONTEXT: EDGE")
         context_menu = QMenu(self)
@@ -174,7 +175,6 @@ class CalculatorSubWindow(NodeEditorWidget):
         if selected and action == bezierAct: selected.edge_type = EDGE_TYPE_BEZIER
         if selected and action == directAct: selected.edge_type = EDGE_TYPE_DIRECT
 
-
     # helper functions
     def determine_target_socket_of_node(self, was_dragged_flag, new_calc_node):
         target_socket = None
@@ -188,7 +188,6 @@ class CalculatorSubWindow(NodeEditorWidget):
         self.scene.doDeselectItems()
         new_calc_node.grNode.doSelect(True)
         new_calc_node.grNode.onSelected()
-
 
     def handleNewNodeContextMenu(self, event):
 
@@ -204,7 +203,8 @@ class CalculatorSubWindow(NodeEditorWidget):
 
             if self.scene.getView().mode == MODE_EDGE_DRAG:
                 # if we were dragging an edge...
-                target_socket = self.determine_target_socket_of_node(self.scene.getView().dragging.drag_start_socket.is_output, new_calc_node)
+                target_socket = self.determine_target_socket_of_node(
+                    self.scene.getView().dragging.drag_start_socket.is_output, new_calc_node)
                 if target_socket is not None:
                     self.scene.getView().dragging.edgeDragEnd(target_socket.grSocket)
                     self.finish_new_node_state(new_calc_node)
@@ -249,7 +249,101 @@ class CalculatorSubWindow(NodeEditorWidget):
     def printallNode(self):
         print('IDs of node ')
         for node in self.scene.nodes:
-            print(node.id)
+            self.testGraph.add_node(node)
+            print(node.op_title)
         print('ID of edge')
         for edge in self.scene.edges:
-            print(edge)
+            print(self.getNodeByStartSocketID(edge.start_socket.id))
+            self.testGraph.add_edge(self.scene.nodes[self.getNodeByStartSocketID(edge.start_socket.id)],
+                                    self.scene.nodes[self.getNodeByEndSocketID(edge.end_socket.id)])
+            # edge.start_socket.id
+            # self.testGraph.add_edge(edge.start_socket, edge.)
+
+        #self.pathList.clear()
+
+        for node in self.scene.nodes:
+            if node.op_code == 1:
+                startNode = node
+        for nodeS in self.scene.nodes:
+            if nodeS.op_code == 2:
+                EndNode = nodeS
+                print('End node')
+                print(EndNode)
+
+        self.printAllPaths(startNode, EndNode)
+        print(self.pathList)
+
+    def printAllPaths(self, startNode, EndNode):
+        # Mark all the vertices as not visited
+        visited = [False] * (self.testGraph.number_of_nodes())
+
+        # Create an array to store paths
+        path = []
+
+        # Call the recursive helper function to print all paths
+        # self.printAllPathsUtil(s, d, visited, path)
+        # print(self.printAllPathsUtil(startNode, EndNode, visited, path))
+        self.printAllPathsUtil(startNode, EndNode, visited, path)
+
+    def printAllPathsUtil(self, u, d, visited, path):
+
+        # Mark the current node as visited and store in path
+        visited[self.getNodeIndex(self.testGraph, u)] = True
+        path.append(u)
+
+        # If current vertex is same as destination, then print
+        # current path[]
+        if u == d:
+
+            print('Printing Path.....')
+            for node in path:
+                print(node)
+
+            self.pathList["Path"].append(path)
+
+
+        else:
+            # If current vertex is not destination
+            # Recur for all the vertices adjacent to this vertex
+
+            for i in list(self.testGraph.adj[u]):
+                if not visited[self.getNodeIndex(self.testGraph, i)]:
+                    # print('Am here inside recursusive')
+                    self.printAllPathsUtil(i, d, visited, path)
+
+                    # Remove current vertex from path[] and mark it as unvisited
+        path.pop()
+        visited[self.getNodeIndex(self.testGraph, u)] = False
+        # return path
+
+    def getNodeByStartSocketID(self, ID):
+
+        index = 0
+        for node in self.scene.nodes:
+            InputSocket = node.outputs
+            if InputSocket:
+                if InputSocket[0].id == ID:
+                    return index
+            index = index + 1
+        return None
+
+    def getNodeByEndSocketID(self, ID):
+
+        index = 0
+        for node in self.scene.nodes:
+            InputSocket = node.inputs
+            if InputSocket:
+                if InputSocket[0].id == ID:
+                    return index
+            index = index + 1
+        return None
+
+    def getNodeIndex(self, G, n):
+        index = 0
+
+        for nod in list(G.nodes):
+            if nod == n:
+                return index
+            index = index + 1
+
+        return index
