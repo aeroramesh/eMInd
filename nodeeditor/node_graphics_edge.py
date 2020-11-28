@@ -50,6 +50,7 @@ class QDMGraphicsEdge(QGraphicsPathItem):
 
     def initAssets(self):
         """Initialize ``QObjects`` like ``QColor``, ``QPen`` and ``QBrush``"""
+        #print(self.edge.Highlighthed)
         self._color = self._default_color = QColor("#001000")
         self._color_selected = QColor("#00ff00")
         self._color_hovered = QColor("#FF37A6FF")
@@ -57,6 +58,7 @@ class QDMGraphicsEdge(QGraphicsPathItem):
         self._pen_selected = QPen(self._color_selected)
         self._pen_dragging = QPen(self._color)
         self._pen_hovered = QPen(self._color_hovered)
+        self._pen_highligted = QPen(QColor("#FF0000"))
         self._pen_dragging.setStyle(Qt.DashLine)
         self._pen.setWidthF(3.0)
         self._pen_selected.setWidthF(3.0)
@@ -174,6 +176,8 @@ class QDMGraphicsEdge(QGraphicsPathItem):
 
         if self.edge.end_socket is None:
             painter.setPen(self._pen_dragging)
+        elif self.edge.Highlighthed:
+            painter.setPen(self._pen_highligted)
         else:
             painter.setPen(self._pen if not self.isSelected() else self._pen_selected)
 

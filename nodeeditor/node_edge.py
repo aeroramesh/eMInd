@@ -21,7 +21,7 @@ class Edge(Serializable):
 
     edge_validators = []        #: class variable containing list of registered edge validators
 
-    def __init__(self, scene:'Scene', start_socket:'Socket'=None, end_socket:'Socket'=None, edge_type=EDGE_TYPE_DIRECT):
+    def __init__(self, scene:'Scene', start_socket:'Socket'=None, end_socket:'Socket'=None, edge_type=EDGE_TYPE_DIRECT, ishighlighthed=False):
         """
 
         :param scene: Reference to the :py:class:`~nodeeditor.node_scene.Scene`
@@ -47,6 +47,7 @@ class Edge(Serializable):
         self.start_socket = start_socket
         self.end_socket = end_socket
         self._edge_type = edge_type
+        self.Highlighthed = ishighlighthed
 
         # create Graphics Edge instance
         self.grEdge = self.createEdgeClassInstance()

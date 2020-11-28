@@ -8,9 +8,12 @@ from nodeeditor.node_graphics_view import MODE_EDGE_DRAG  # , MODE_EDGES_REROUTI
 from nodeeditor.utils import dumpException
 import networkx as nx
 import matplotlib.pyplot as plt
+import sys
+import copy
 
 DEBUG = False
 DEBUG_CONTEXT = False
+
 
 
 class CalculatorSubWindow(NodeEditorWidget):
@@ -256,10 +259,11 @@ class CalculatorSubWindow(NodeEditorWidget):
             print(self.getNodeByStartSocketID(edge.start_socket.id))
             self.testGraph.add_edge(self.scene.nodes[self.getNodeByStartSocketID(edge.start_socket.id)],
                                     self.scene.nodes[self.getNodeByEndSocketID(edge.end_socket.id)])
+            edge.Highlighthed = True
             # edge.start_socket.id
             # self.testGraph.add_edge(edge.start_socket, edge.)
 
-        #self.pathList.clear()
+        # self.pathList.clear()
 
         for node in self.scene.nodes:
             if node.op_code == 1:
@@ -271,7 +275,6 @@ class CalculatorSubWindow(NodeEditorWidget):
                 print(EndNode)
 
         self.printAllPaths(startNode, EndNode)
-        print(self.pathList)
 
     def printAllPaths(self, startNode, EndNode):
         # Mark all the vertices as not visited
@@ -283,38 +286,18 @@ class CalculatorSubWindow(NodeEditorWidget):
         # Call the recursive helper function to print all paths
         # self.printAllPathsUtil(s, d, visited, path)
         # print(self.printAllPathsUtil(startNode, EndNode, visited, path))
-        self.printAllPathsUtil(startNode, EndNode, visited, path)
-
-    def printAllPathsUtil(self, u, d, visited, path):
-
-        # Mark the current node as visited and store in path
-        visited[self.getNodeIndex(self.testGraph, u)] = True
-        path.append(u)
-
-        # If current vertex is same as destination, then print
-        # current path[]
-        if u == d:
-
-            print('Printing Path.....')
-            for node in path:
-                print(node)
-
-            self.pathList["Path"].append(path)
 
 
-        else:
-            # If current vertex is not destination
-            # Recur for all the vertices adjacent to this vertex
+        pathList = []
+        self.generatePaths(self.testGraph, startNode, EndNode, path, pathList, visited)
 
-            for i in list(self.testGraph.adj[u]):
-                if not visited[self.getNodeIndex(self.testGraph, i)]:
-                    # print('Am here inside recursusive')
-                    self.printAllPathsUtil(i, d, visited, path)
+        print(pathList)
+        '''
+        self.printAllPathsUtil(startNode, EndNode, visited, path, pathList)
+        print(pathList)
+        print(path)'''
 
-                    # Remove current vertex from path[] and mark it as unvisited
-        path.pop()
-        visited[self.getNodeIndex(self.testGraph, u)] = False
-        # return path
+
 
     def getNodeByStartSocketID(self, ID):
 
@@ -337,6 +320,33 @@ class CalculatorSubWindow(NodeEditorWidget):
                     return index
             index = index + 1
         return None
+
+    def generatePaths(self, testGraph, u, d, path, pathList, visited):
+        """
+        Recursive function. Finds all paths through the specified
+        graph from start node to end node. For cyclical paths, this stops
+        at the end of the first cycle.
+
+        """
+        visited[self.getNodeIndex(testGraph, u)] = True
+        path.append(u)
+
+        if u == d:
+            print('Printing Path.....')
+            storePath = []
+            storePath.extend(path)
+            pathList.append(storePath)
+            print(pathList)
+        else:
+            for i in list(self.testGraph.adj[u]):
+                if not visited[self.getNodeIndex(self.testGraph, i)]:
+                    self.generatePaths(testGraph, i, d, path, pathList, visited)
+
+        path.pop()
+        visited[self.getNodeIndex(self.testGraph, u)] = False
+
+
+
 
     def getNodeIndex(self, G, n):
         index = 0
