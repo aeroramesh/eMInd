@@ -61,6 +61,7 @@ class eMindWindow(NodeEditorWindow):
 
         self.createNodesDock()
         self.createPropertyDock()
+        self.createPathlistDock()
 
         self.createActions()
         self.createMenus()
@@ -262,6 +263,13 @@ class eMindWindow(NodeEditorWindow):
 
         self.addDockWidget(Qt.RightDockWidgetArea, self.nodesDock)
 
+    def createPathlistDock(self):
+        self.pathListWidget = QListWidget()
+        self.pathDock = QDockWidget("Generated TestCase")
+        self.pathDock.setWidget(self.pathListWidget)
+        self.pathDock.setFloating(False)
+        self.addDockWidget(Qt.BottomDockWidgetArea, self.pathDock)
+
     def createStatusBar(self):
         self.statusBar().showMessage("Ready")
 
@@ -310,7 +318,7 @@ class eMindWindow(NodeEditorWindow):
 
     def dummyFunc(self):
         print('Dummy pAss')
-        print(self.get)
+
 
     def setUpToolBar(self):
 
