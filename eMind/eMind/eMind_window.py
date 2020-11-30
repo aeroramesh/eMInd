@@ -74,6 +74,7 @@ class eMindWindow(NodeEditorWindow):
         self.readSettings()
 
         self.setWindowTitle("eMind -SimTestLab")
+        self.ListofPath = []
 
     def closeEvent(self, event):
         self.mdiArea.closeAllSubWindows()
@@ -269,6 +270,7 @@ class eMindWindow(NodeEditorWindow):
         self.pathDock.setWidget(self.pathListWidget)
         self.pathDock.setFloating(False)
         self.addDockWidget(Qt.BottomDockWidgetArea, self.pathDock)
+        self.pathListWidget.itemSelectionChanged.connect(self.highlightpath)
 
     def createStatusBar(self):
         self.statusBar().showMessage("Ready")
@@ -319,14 +321,25 @@ class eMindWindow(NodeEditorWindow):
     def dummyFunc(self):
         print('Dummy pAss')
         SubWindow = self.getCurrentNodeEditorWidget()
-        print(SubWindow.printallNode())
+        #print(SubWindow.printallNode())
 
         i = 0
         self.pathListWidget.clear()
-        for tc in SubWindow.printallNode():
-            self.pathListWidget.insertItem(i, 'gttgt')
-            i = i+1
-            print(i)
+        self.ListofPath = SubWindow.printallNode()
+        if isinstance(self.ListofPath[0], list):
+            for tc in self.ListofPath:
+                self.pathListWidget.insertItem(i, 'Testcase_'+str(i))
+
+                i = i+1
+                print(i)
+
+    def highlightpath(self):
+        idx = self.pathListWidget.currentRow()
+        SubWindow = self.getCurrentNodeEditorWidget()
+        SubWindow.HighLightpath(self.ListofPath[idx])
+        SubWindow.update()
+
+
 
 
 

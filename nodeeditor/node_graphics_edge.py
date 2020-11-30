@@ -177,7 +177,7 @@ class QDMGraphicsEdge(QGraphicsPathItem):
         if self.edge.end_socket is None:
             painter.setPen(self._pen_dragging)
         elif self.edge.Highlighthed:
-            painter.setPen(self._pen_highligted)
+            painter.setPen(self._pen_selected)
         else:
             painter.setPen(self._pen if not self.isSelected() else self._pen_selected)
 

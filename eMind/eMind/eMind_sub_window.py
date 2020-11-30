@@ -15,7 +15,6 @@ DEBUG = False
 DEBUG_CONTEXT = False
 
 
-
 class CalculatorSubWindow(NodeEditorWidget):
     def __init__(self):
         super().__init__()
@@ -32,7 +31,7 @@ class CalculatorSubWindow(NodeEditorWidget):
         self.scene.setNodeClassSelector(self.getNodeClassFromData)
 
         self._close_event_listeners = []
-        self.pathList = []
+        # self.pathList = []
         self.testGraph = nx.DiGraph()
 
     def getNodeClassFromData(self, data):
@@ -251,6 +250,7 @@ class CalculatorSubWindow(NodeEditorWidget):
 
     def printallNode(self):
         print('IDs of node ')
+        self.testGraph.clear()
         for node in self.scene.nodes:
             self.testGraph.add_node(node)
             print(node.op_title)
@@ -258,12 +258,10 @@ class CalculatorSubWindow(NodeEditorWidget):
         for edge in self.scene.edges:
             print(self.getNodeByStartSocketID(edge.start_socket.id))
             self.testGraph.add_edge(self.scene.nodes[self.getNodeByStartSocketID(edge.start_socket.id)],
-                                    self.scene.nodes[self.getNodeByEndSocketID(edge.end_socket.id)])
-            edge.Highlighthed = True
+                                    self.scene.nodes[self.getNodeByEndSocketID(edge.end_socket.id)], SceneEdge=edge)
+            edge.Highlighthed = False
             # edge.start_socket.id
             # self.testGraph.add_edge(edge.start_socket, edge.)
-
-        # self.pathList.clear()
 
         for node in self.scene.nodes:
             if node.op_code == 1:
@@ -271,8 +269,8 @@ class CalculatorSubWindow(NodeEditorWidget):
         for nodeS in self.scene.nodes:
             if nodeS.op_code == 2:
                 EndNode = nodeS
-                #print('End node')
-                #print(EndNode)
+                # print('End node')
+                # print(EndNode)
 
         return self.printAllPaths(startNode, EndNode)
 
@@ -287,8 +285,8 @@ class CalculatorSubWindow(NodeEditorWidget):
         # self.printAllPathsUtil(s, d, visited, path)
         # print(self.printAllPathsUtil(startNode, EndNode, visited, path))
 
-
         pathList = []
+
         self.generatePaths(self.testGraph, startNode, EndNode, path, pathList, visited)
 
         return pathList
@@ -296,8 +294,6 @@ class CalculatorSubWindow(NodeEditorWidget):
         self.printAllPathsUtil(startNode, EndNode, visited, path, pathList)
         print(pathList)
         print(path)'''
-
-
 
     def getNodeByStartSocketID(self, ID):
 
@@ -332,11 +328,11 @@ class CalculatorSubWindow(NodeEditorWidget):
         path.append(u)
 
         if u == d:
-            #print('Printing Path.....')
+            print('Printing Path.....')
             storePath = []
             storePath.extend(path)
             pathList.append(storePath)
-            #print(pathList)
+            print(pathList)
         else:
             for i in list(self.testGraph.adj[u]):
                 if not visited[self.getNodeIndex(self.testGraph, i)]:
@@ -344,9 +340,6 @@ class CalculatorSubWindow(NodeEditorWidget):
 
         path.pop()
         visited[self.getNodeIndex(self.testGraph, u)] = False
-
-
-
 
     def getNodeIndex(self, G, n):
         index = 0
@@ -357,3 +350,12 @@ class CalculatorSubWindow(NodeEditorWidget):
             index = index + 1
 
         return index
+
+    def HighLightpath(self,Path):
+        for edge in self.scene.edges:
+            edge.Highlighthed = False
+
+        for i in range(len(Path)-1):
+            tobeHighligted = self.testGraph.get_edge_data(Path[i],Path[i+1])
+            tobeHighligted['SceneEdge'].Highlighthed = True
+
