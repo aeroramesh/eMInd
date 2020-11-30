@@ -318,6 +318,20 @@ class eMindWindow(NodeEditorWindow):
 
     def dummyFunc(self):
         print('Dummy pAss')
+        SubWindow = self.getCurrentNodeEditorWidget()
+        print(SubWindow.printallNode())
+
+        i = 0
+        self.pathListWidget.clear()
+        for tc in SubWindow.printallNode():
+            self.pathListWidget.insertItem(i, 'gttgt')
+            i = i+1
+            print(i)
+
+
+
+
+
 
 
     def setUpToolBar(self):

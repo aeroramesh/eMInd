@@ -32,7 +32,7 @@ class CalculatorSubWindow(NodeEditorWidget):
         self.scene.setNodeClassSelector(self.getNodeClassFromData)
 
         self._close_event_listeners = []
-        self.pathList = {"Path": []}
+        self.pathList = []
         self.testGraph = nx.DiGraph()
 
     def getNodeClassFromData(self, data):
@@ -237,7 +237,7 @@ class CalculatorSubWindow(NodeEditorWidget):
 
             elif e.key() == Qt.Key_Enter or e.key() == Qt.Key_Return:
                 print('Key Enter')
-                self.printallNode()
+
             else:
 
                 super().keyPressEvent(e)
@@ -271,10 +271,10 @@ class CalculatorSubWindow(NodeEditorWidget):
         for nodeS in self.scene.nodes:
             if nodeS.op_code == 2:
                 EndNode = nodeS
-                print('End node')
-                print(EndNode)
+                #print('End node')
+                #print(EndNode)
 
-        self.printAllPaths(startNode, EndNode)
+        return self.printAllPaths(startNode, EndNode)
 
     def printAllPaths(self, startNode, EndNode):
         # Mark all the vertices as not visited
@@ -291,7 +291,7 @@ class CalculatorSubWindow(NodeEditorWidget):
         pathList = []
         self.generatePaths(self.testGraph, startNode, EndNode, path, pathList, visited)
 
-        print(pathList)
+        return pathList
         '''
         self.printAllPathsUtil(startNode, EndNode, visited, path, pathList)
         print(pathList)
@@ -332,11 +332,11 @@ class CalculatorSubWindow(NodeEditorWidget):
         path.append(u)
 
         if u == d:
-            print('Printing Path.....')
+            #print('Printing Path.....')
             storePath = []
             storePath.extend(path)
             pathList.append(storePath)
-            print(pathList)
+            #print(pathList)
         else:
             for i in list(self.testGraph.adj[u]):
                 if not visited[self.getNodeIndex(self.testGraph, i)]:
